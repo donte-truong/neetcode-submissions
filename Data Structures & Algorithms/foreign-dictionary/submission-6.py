@@ -1,0 +1,37 @@
+class Solution:
+    def foreignDictionary(self, words: List[str]) -> str:
+        nodes = {c: set() for w in words for c in w}
+
+        for i in range(len(words)-1):
+            w1, w2 = words[i], words[i+1]
+            minLen = min(len(w1), len(w2))
+            if len(w1) > len(w2) and w1[:minLen] == w2[:minLen]:
+                return ""
+            for j in range(minLen):
+                c1, c2 = w1[j], w2[j]
+                if c1 != c2:
+                    nodes[c1].add(c2)
+                    break
+            
+        visited = {}
+        res = []
+
+        def dfs(node):
+            if node in visited:
+                return visited[node]
+
+            visited[node] = True
+
+            for adj in nodes[node]:
+                if dfs(adj):
+                    return True
+
+            visited[node] = False
+            res.append(node)
+
+        for node in nodes:
+            if dfs(node):
+                return ""
+
+        res.reverse()
+        return "".join(res)
