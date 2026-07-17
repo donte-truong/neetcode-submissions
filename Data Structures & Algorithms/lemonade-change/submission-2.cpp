@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool lemonadeChange(vector<int>& bills) {
+        int fives = 0;
+        int tens = 0;
+
+        for (int& bill : bills) {
+            if (bill == 5) {
+                fives++;
+            } else if (bill == 10) {
+                fives--;
+                tens++;
+            } else if (tens > 0) {
+                tens--;
+                fives -= 1;
+            } else {
+                fives -= 3;
+            }
+
+            cout << fives << ' ' << tens << '\n';
+
+            if (fives < 0 || tens < 0)
+                return false;
+        }
+
+        return true;
+    }
+};
